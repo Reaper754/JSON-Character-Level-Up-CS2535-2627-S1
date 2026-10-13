@@ -1,17 +1,21 @@
 import json
 
 #json files
-n = str(1)
-json_file = "level_" + n + "_character.json"
+n = 1
+json_file = "level_" + str(n) + "_character.json"
 
 #messages for inputs
 level_up = "Do you want to level up? Type yes or no.\n"
-attribute_choice = """You have three points to increase you attributes. What would you like to increase?
+attribute_choice = """You have one point to increase you attributes. What would you like to increase?
 Strength | Dexterity | Constitution | Intelligence | Wisdom | Charisma\n"""
+weapon = """What weapon would you like to add?\n"""
+add_weapon = "Should a weapon be added? Type yes or no\n"
+add_skill = "Should a skill be added. Type yes or no\n"
+skill = "What skill would you like to add?\n"
 
 
 #list of attributes
-attributes = [
+attributes_list = [
     "strength",
     "dexterity",
     "constitution",
@@ -21,8 +25,14 @@ attributes = [
 ]
 
 #values for points
-attribute_points = 3
+attribute_points = 1
 selected_points = 0
+
+#weapons you get upon leveling up
+weapons = ["Shadow Dagger", "Greatsword", "Crossbow"]
+
+#skills you can receive
+skills = ["Investigation", "Survival", "Stealth"]
 
 #reads the level 1 character jason file
 with open(json_file, "r") as file:
@@ -31,28 +41,48 @@ with open(json_file, "r") as file:
 #loop to ask and assign new values to file
 while True:
     try:
-        level_up_input = input(level_up).strip().lower()
-        if level_up_input == "no":
-            print("You will remain at", data["level"])
-        else:
-            data["level"] += 1
-            data["armor_class"] += 1
-            print("You are now", data["level"], "with an armor class of", data["armor_class"])
-#checkpoint to return to the start of the attribute select in order to assign values to multiple attributes
-            while True:
+        #while loops for checkpoints
+        while True:
+            print("type exit to quit")
+            #level up section
+            level_up_input = input(level_up).strip().lower()
+            if level_up_input == "no":
+                print("You will remain at level", data["level"])
+                break
+            elif level_up_input == "exit":
+                break
+            elif level_up_input == "yes":
+                data["level"] += 1
+                data["armor_class"] += 1
+                print("You are now level", data["level"], "with an armor class of", data["armor_class"])
+                #attribute select
                 attribute_select = input(attribute_choice).strip().lower()
-                for attribute in attributes:
-                    if attribute_select == attributes:
-                        selected_points += int(input(f"How many points do you want to assign to {attributes}. You have {attribute_points} left."))
-                        if selected_points >= 0 and selected_points <= 3:
-                            attribute_points -= selected_points
-                            data[attributes] += selected_points
-                            if attribute_points == 0:
-                                print("you have no more points to spend")
-                                break
+                data["attributes"][attribute_select] += 1
+                print("You have upgraded", attribute_select, "and are now at", data["attributes"][attribute_select])
+                #Skill select
+                skill_input = input(skill).strip().lower()
+                if skill_input == int:
+                    print("Invalid input")
+                data["skills"].append(skill_input)
+                break
+            else:
+                print("invalid input")
+            break
+        while True:
+            #Weapon select
+            weapon_input = input(add_weapon).strip().lower()
+            if weapon_input == "yes":
+                weapon_select = input(weapon).strip().lower()
+                data["weapons"].append(weapon_select)
+                print(f"You added a {weapon_select}")
+                break
+            elif weapon_input == "no":
+                print("No weapon will be added")
+                break
+            else:
+                print("invalid input")
+        n += 1
+        with open("level_2_character.json", "w") as file:
+            json.dump(data, file, indent=4)
     except ValueError:
-        pass
-
-
-with open("level_2_character.json", "w") as file:
-    json.dump(data, file, indent=4)
+        print("Invalid input")
