@@ -1,0 +1,25 @@
+{
+    "name": "Kael Emberfall",
+    "species": "Dragonborn",
+    "level": 3,
+    "armor_class": 17,
+    "attributes": {
+        "strength": 16,
+        "dexterity": 12,
+        "constitution": 14,
+        "intelligence": 10,
+        "wisdom": 13,
+        "charisma": 13
+    },
+    "skills": [
+        "Athletics",
+        "Intimidation",
+        "Perception",
+        "Aaaa",
+        "Bbb"
+    ],
+    "weapons": [
+        "Battleaxe",
+        "Handaxe"
+    ]
+}
